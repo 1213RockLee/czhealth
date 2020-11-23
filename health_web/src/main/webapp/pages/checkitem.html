@@ -233,10 +233,20 @@
             methods: {
                 //编辑
                 handleEdit() {
+                    //提交数据
+                    axios.post("/checkitem/updateCheckItem.do",this.formData).then(res=>
+                    {
+                        //修改成功,关闭窗口,刷新页面
+                        if (res.data.flag) {
+                            this.dialogFormVisible4Edit=false;
+                            this.findPage();
+                        }else {
+                            this.$message.error(res.data.message);
+                        }
+                    })
                 },
                 //添加
                 handleAdd () {
-
                     // 进行表单校验
                     this.$refs['dataAddForm'].validate((valid) => {
                         if (valid) {
@@ -263,14 +273,14 @@
                 //分页查询
                 findPage() {
                     // 发送get请求findAll
-                    axios.get('/checkitem/findAll.do').then(res => {
-                        //判断是否成功 res.data => Result(flag,message,data)
-                        if(res.data.flag){
-                            // 绑定数据
-                            this.dataList = res.data.data;
-                        }else{
+                    axios.post('/checkitem/findByPage.do',this.pagination).then(res => {
+                        if (res.data.flag) {
+                            //绑定数据
+                            this.dataList=res.data.data.rows;
+                            this.pagination.total=res.data.data.total;
+                        }else {
                             this.$message.error(res.data.message);
-                        }
+                    }
                     });
                 },
                 // 重置表单
@@ -286,12 +296,31 @@
                 },
                 // 弹出编辑窗口
                 handleUpdate(row) {
+                    this.dialogFormVisible4Edit=true;
+                    this.resetForm();
+                    axios.get("/checkitem/findCheckItemById.do?id="+row.id).then(res=>{
+                        if (res.data.flag) {
+                            //获得信息成功
+                            this.formData=res.data.data
+                        }else{
+                            this.$message.error(res.data.message);
+                        }
+                    })
                 },
                 //切换页码
                 handleCurrentChange(currentPage) {
                 },
                 // 删除
                 handleDelete(row) {
+                    axios.get("/checkitem/deleteById.do?id="+row.id).then(res=>{
+                        if (res.data.flag) {
+                            //刷新页面
+                            this.findPage();
+                        }else {
+                            //提示删除失败
+                            this.$message.error(res.data.message);
+                        }
+                    })
                 }
             }
         })

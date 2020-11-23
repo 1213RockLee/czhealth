@@ -5,6 +5,7 @@
 	version="2.5">
 	<servlet>
 		<servlet-name>springMVC</servlet-name>
+		<!--该=改变了-->
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
