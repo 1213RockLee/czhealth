@@ -169,7 +169,6 @@
                             </div>
                         </el-dialog>
                     </div>
-
                     <!-- 编辑标签弹层 -->
                     <div class="add-form">
                         <el-dialog title="编辑检查组" :visible.sync="dialogFormVisible4Edit">
@@ -268,6 +267,7 @@
                     pageSize:10,
                     total:100,
                     queryString:null,
+
                 },
                 dataList: [],//列表数据
                 formData: {},//表单数据
@@ -302,7 +302,7 @@
                         if (res.data.flag) {
                             //添加成功，刷新页面，即可
                                 // 关闭编辑窗口
-                                this.dialogFormVisible4Edit = false;
+                                this.dialogFormVisible = false;
                                 // 刷新列表数据
                                 this.findPage();
                         }else{
@@ -330,7 +330,7 @@
                 },
                 // 弹出添加窗口
                 handleCreate() {
-                    this.dialogFormVisible4Edit =true;
+                    this.dialogFormVisible =true;
                     this.resetForm();
                     axios.get("/checkitem/findAll.do").then(res=>{
                         if (res.data.flag) {

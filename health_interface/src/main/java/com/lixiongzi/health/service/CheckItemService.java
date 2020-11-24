@@ -14,9 +14,9 @@ public interface CheckItemService {
 
     PageResult findByPage(QueryPageBean queryPageBean);
 
-    void deleteById(int id);
+    void deleteById(int id)throws MyException;
 
     void updateCheckItem(CheckItem checkItem);
 
-    CheckItem findCheckItemById(Integer id) throws MyException;
+    CheckItem findCheckItemById(Integer id) ;
 }

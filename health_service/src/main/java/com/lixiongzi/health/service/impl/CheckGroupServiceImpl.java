@@ -10,6 +10,7 @@ import com.lixiongzi.health.entity.QueryPageBean;
 import com.lixiongzi.health.pojo.CheckGroup;
 import com.lixiongzi.health.service.CheckGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -54,13 +55,13 @@ public class CheckGroupServiceImpl implements CheckGroupService {
     }
 
     @Override
+    @Transactional
     public void addCheckGroup(CheckGroup checkGroup, Integer[] checkitemIds) {
         //先添加，获取id
         checkGroupDao.addCheckGroup(checkGroup);
         //遍历数组
         for (int i = 0; i < checkitemIds.length; i++) {
             checkGroupDao.addGroupAndItem(checkGroup.getId(), checkitemIds[i]);
-
         }
     }
 
@@ -73,5 +74,10 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         }else {
             throw new MyException("此检查组被套餐使用,无法删除");
         }
+    }
+
+    @Override
+    public List<CheckGroup> findAll() {
+        return checkGroupDao.findAll();
     }
 }

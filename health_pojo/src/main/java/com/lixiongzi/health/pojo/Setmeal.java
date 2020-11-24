@@ -1,5 +1,7 @@
 package com.lixiongzi.health.pojo;
 
+import org.apache.ibatis.annotations.Param;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,6 +9,9 @@ import java.util.List;
  * 体检套餐
  */
 public class Setmeal implements Serializable {
+
+
+
     private Integer id;
     private String name;
     private String code;
@@ -104,4 +109,6 @@ public class Setmeal implements Serializable {
     public void setImg(String img) {
         this.img = img;
     }
+
+
 }
