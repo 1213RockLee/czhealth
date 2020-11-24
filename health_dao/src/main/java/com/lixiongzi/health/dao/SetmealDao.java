@@ -21,4 +21,7 @@ public interface SetmealDao {
 
     void updateSetmeal(Setmeal setmeal);
 
+    int findCountSetmealAndOrder(int id);
+
+    void deleteSetmealById(int id);
 }

@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.StringUtil;
+import com.lixiongzi.health.Exception.MyException;
 import com.lixiongzi.health.dao.SetmealDao;
 import com.lixiongzi.health.entity.PageResult;
 import com.lixiongzi.health.entity.QueryPageBean;
@@ -52,7 +53,7 @@ public class SetmealServiceImpl implements SetmealService {
       resultMap.put("checkgroupIds",integerList);
         return resultMap;
     }
-
+@Transactional
     @Override
     public void updateSetmeal(Setmeal setmeal, Integer[] checkgroupIds) {
         //删除关系
@@ -67,5 +68,15 @@ public class SetmealServiceImpl implements SetmealService {
         }
         //更新套餐数据
         setmealDao.updateSetmeal(setmeal);
+    }
+@Transactional
+    @Override
+    public void deleteSetmealById(int id) {
+        //先判断是不是有关系
+    if (setmealDao.findCountSetmealAndOrder(id)!=0) {
+        throw  new MyException("此套餐已有顾客下单,无法删除");
+    }
+    setmealDao.deleteSetmealAndCheckGroup(id);
+    setmealDao.deleteSetmealById(id);
     }
 }

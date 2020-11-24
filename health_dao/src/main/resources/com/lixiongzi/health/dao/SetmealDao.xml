@@ -40,4 +40,10 @@
         where
         id=#{id}
     </update>
+    <select id="deleteSetmealById" parameterType="int">
+        delete from t_setmeal where id=#{setmealId}
+    </select>
+    <select id="findCountSetmealAndOrder" parameterType="int" resultType="int">
+        select count(0) from t_order where setmeal_id=#{setmeal_id}
+    </select>
 </mapper>

@@ -75,9 +75,4 @@ public class CheckGroupServiceImpl implements CheckGroupService {
             throw new MyException("此检查组被套餐使用,无法删除");
         }
     }
-
-    @Override
-    public List<CheckGroup> findAll() {
-        return checkGroupDao.findAll();
-    }
 }

@@ -62,12 +62,19 @@ public class SetMealController {
     @RequestMapping("/findSetmealById")
     public Result findSetmealById(int id) {
         Map resultMap = setmealService.findSetmealById(id);
-        resultMap.put("address",QiNiuUtils.DOMAIN);
+        resultMap.put("address", QiNiuUtils.DOMAIN);
         return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, resultMap);
     }
-        @RequestMapping("/updateSetmeal")
-            public Result updateSetmeal(@RequestBody Setmeal setmeal, Integer[] checkgroupIds)  {
-            setmealService.updateSetmeal(setmeal,checkgroupIds);
-                return new Result(true,"更新数据成功",null);
-            }
+
+    @RequestMapping("/updateSetmeal")
+    public Result updateSetmeal(@RequestBody Setmeal setmeal, Integer[] checkgroupIds) {
+        setmealService.updateSetmeal(setmeal, checkgroupIds);
+        return new Result(true, "更新数据成功", null);
+    }
+
+    @RequestMapping("/deleteSetmealById")
+    public Result deleteSetmealById(int id) {
+        setmealService.deleteSetmealById(id);
+        return new Result(true, "删除成功", null);
+    }
 }
