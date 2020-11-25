@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lixiongzi.health.dao.OrderSettingDao">
+    <select id="findOrderSettingByDate" parameterType="date" resultType="ordersetting">
+        select * from t_ordersetting where orderDate=#{orderDate}
+    </select>
+    <update id="uploadOrderSetting" parameterType="orderSetting">
+        update t_ordersetting set orderDate=#{orderDate},
+        number=#{number}
+    </update>
+    <insert id="addOrderSetting" parameterType="orderSetting">
+        insert into t_ordersetting values(null,#{orderDate},#{number},0)
+    </insert>
+</mapper>

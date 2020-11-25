@@ -10,6 +10,7 @@ import com.lixiongzi.health.entity.PageResult;
 import com.lixiongzi.health.entity.QueryPageBean;
 import com.lixiongzi.health.pojo.Setmeal;
 import com.lixiongzi.health.service.SetmealService;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,11 +59,9 @@ public class SetmealServiceImpl implements SetmealService {
     public void updateSetmeal(Setmeal setmeal, Integer[] checkgroupIds) {
         //删除关系
         setmealDao.deleteSetmealAndCheckGroup(setmeal.getId());
-        System.out.println("还没进去呢");
       //判断非空,插入关系
         if (checkgroupIds!=null) {
             for (Integer checkgroupId : checkgroupIds) {
-                System.out.println("走到这里来了");
                 setmealDao.addSetmealAndCheckGroup(setmeal.getId(),checkgroupId);
             }
         }
