@@ -46,4 +46,12 @@
     <select id="findCountSetmealAndOrder" parameterType="int" resultType="int">
         select count(0) from t_order where setmeal_id=#{setmeal_id}
     </select>
+    <select id="findAllSetmeal" resultType="Setmeal">
+        select * from t_setmeal
+    </select>
+    <select id="findDetailById" parameterType="int" resultType="setmeal">
+        select
+        from
+        t_setmeal
+    </select>
 </mapper>

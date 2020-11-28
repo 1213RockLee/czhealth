@@ -5,6 +5,7 @@ import com.lixiongzi.health.entity.PageResult;
 import com.lixiongzi.health.entity.QueryPageBean;
 import com.lixiongzi.health.pojo.Setmeal;
 
+import java.util.List;
 import java.util.Map;
 
 public interface SetmealService {
@@ -17,4 +18,8 @@ public interface SetmealService {
     void updateSetmeal(Setmeal setmeal, Integer[] checkgroupIds);
 
     void deleteSetmealById(int id) throws MyException;
+
+    List<Setmeal> findAllSetmeal();
+
+    Setmeal findDetailById(int id);
 }

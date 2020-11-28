@@ -24,4 +24,8 @@ public interface SetmealDao {
     int findCountSetmealAndOrder(int id);
 
     void deleteSetmealById(int id);
+
+    List<Setmeal> findAllSetmeal();
+
+    Setmeal findDetailById(int id);
 }
