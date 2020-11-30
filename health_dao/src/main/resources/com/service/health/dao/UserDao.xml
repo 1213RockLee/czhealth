@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.service.health.dao.UserDao">
+    <resultMap id="user_role_permission" type="user">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <collection property="roles" ofType="role">
+            <result property="keyword" column="role_keyword"/>
+            <collection property="permissions" ofType="permission">
+                <result property="keyword" column="permission_keyword"/>
+            </collection>
+        </collection>
+    </resultMap>
+    <select id="findByUsername" parameterType="string" resultMap="user_role_permission">
+select
+tu.id ,tu.username,tu.password,tr.keyword role_keyword,tp.keyword permission_keyword
+from
+t_user tu,t_user_role tur,t_role tr,t_role_permission trp,t_permission tp
+where
+tu.id=tur.user_id and tr.id=tur.role_id and tr.id=trp.role_id and tp.id=trp.permission_id and
+tu.username=#{username}
+    </select>
+</mapper>

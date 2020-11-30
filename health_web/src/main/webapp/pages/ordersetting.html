@@ -136,10 +136,45 @@
             },
             created: function () {//在vue初始化时调用
                 this.initData(null);
+                this.findOrderSettingByMonth();
             },
             methods: {
+                //获取当前月的数据
+                findOrderSettingByMonth(){
+                    //在这里需要把月份拼接上年份,后端要用,括号原因是避免执行过程中出现意外
+                    var month = this.currentYear + "-" + (this.currentMonth>9?this.currentMonth:('0'+this.currentMonth));
+                    axios.get('/ordersetting/findOrderSettingByMonth.do?month=' + month).then(res => {
+                        if(res.data.flag){
+                            this.leftobj = res.data.data;
+                        }else{
+                            this.$message.error(res.data.message);
+                        }
+                    })
+                },
 				//预约设置
                 handleOrderSet(day){
+                    // 2020-11-30
+                    var orderDate = this.formatDate(day.getFullYear(), day.getMonth() + 1, day.getDate());
+                    this.$prompt('请输入最大预约数', '预约设置', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        inputPattern: /^[1-9]\d*$/,
+                        inputErrorMessage: '只能输入正整数'
+                    }).then(({ value }) => {
+                        var number = value;
+                        var submitData = {orderDate,number}; // json数据orderDate变量名key, 变量的值为value es6
+                        axios.post('/ordersetting/editNumberByDate.do',submitData).then(res => {
+                            this.$message({
+                                message: res.data.message,
+                                type: res.data.flag?"success":"error"
+                            });
+                            if(res.data.flag){
+                                // 刷新日历
+                                this.findOrderSettingByMonth();
+                            }
+                        })
+                    }).catch(() => {
+                    });
                 },
 				//上传之前进行文件格式校验
                 beforeUpload(file){
@@ -215,19 +250,12 @@
                             dayobject.index = index++;
                         this.days.push(dayobject);
                     }
-                    
-                    /*this.leftobj = [
-                        { date: 1, number: 120, reservations: 1 },
-                        { date: 3, number: 120, reservations: 1 },
-                        { date: 4, number: 120, reservations: 120 },
-                        { date: 6, number: 120, reservations: 1 },
-                        { date: 8, number: 120, reservations: 1 }
-                    ];*/
                 },
 				//切换到当前月份
                 goCurrentMonth: function (year, month) {
                     var d = new Date();
                     this.initData(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1));
+                    this.findOrdersettingByMonth();
                 },
 				//向前一个月
                 pickPre: function (year, month) {
@@ -237,12 +265,14 @@
                     var d = new Date(this.formatDate(year, month, 1));
                     d.setDate(0);
                     this.initData(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1));
+                    this.findOrdersettingByMonth();
                 },
 				//向后一个月
                 pickNext: function (year, month) {
                     var d = new Date(this.formatDate(year, month, 1));
                     d.setDate(35);////获取指定天之后的日期
                     this.initData(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1));
+                    this.findOrdersettingByMonth();
                 },
                 // 返回 类似 2016-01-02 格式的字符串
                 formatDate: function (year, month, day) {

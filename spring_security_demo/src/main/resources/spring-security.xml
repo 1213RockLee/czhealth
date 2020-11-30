@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+    <!--【注意】：这里所有的路径必须以/开头，否则启动报错-->
+    <!--将登陆界面放行掉-->
+    <!--匿名访问-->
+    <security:http pattern="/login.html" security="none"/>
+    <security:http pattern="/fail.html" security="none"/>
+    <!--拦截规则,这个规则包括许多,路径,页面的控制,csrf的关闭,登出操作,文件嵌套的访问策略-->
+    <!--auto就是自动创建登陆界面 后面的为true就表示下面的access标签可以使用表达式-->
+    <security:http auto-config="true" use-expressions="false">
+        <!--设置登陆成功,失败,校验等等-->
+        <security:form-login
+        login-page="/login.html"
+        login-processing-url="/login.do"
+        username-parameter="username"
+        password-parameter="password"
+        authentication-failure-url="/fail.html"
+        default-target-url="/index.html"
+        always-use-default-target="true"
+        />
+    <!--过滤器的拦截路径,就是要进行认证,或者需要授权的请求路径-->
+    <security:intercept-url pattern="/**" access="ROLE_ADMIN"/>
+<!--失败的时候的路径-->
+        <security:logout logout-url="/logout" invalidate-session="true" logout-success-url="/login.html"/>
+    <!--关闭csrf,准许跨域访问-->
+    <security:csrf disabled="true"></security:csrf>
+    </security:http>
+    <!--认证管理器-->
+    <security:authentication-manager>
+        <!--用户信息的提供者-->
+        <security:authentication-provider>
+            <!--用户信息服务者-->
+            <security:user-service>
+               <!--这个是自己写的那个,还没有使用提供呢-->
+                <security:user name="admin" password="{noop}admin" authorities="ROLE_ADMIN"/>
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>
+</beans>

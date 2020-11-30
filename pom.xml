@@ -16,6 +16,7 @@
         <module>health_service</module>
         <module>health_web</module>
         <module>health_mobile</module>
+        <module>spring_security_demo</module>
     </modules>
 
     <properties>
