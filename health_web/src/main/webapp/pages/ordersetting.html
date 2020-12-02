@@ -145,7 +145,11 @@
                     var month = this.currentYear + "-" + (this.currentMonth>9?this.currentMonth:('0'+this.currentMonth));
                     axios.get('/ordersetting/findOrderSettingByMonth.do?month=' + month).then(res => {
                         if(res.data.flag){
-                            this.leftobj = res.data.data;
+                            var resultData = res.data.data;
+                            resultData.forEach(d=>{
+                                d.date = d.date.substr(8,2)*1;
+                            });
+                            this.leftobj = resultData;
                         }else{
                             this.$message.error(res.data.message);
                         }
@@ -255,7 +259,7 @@
                 goCurrentMonth: function (year, month) {
                     var d = new Date();
                     this.initData(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1));
-                    this.findOrdersettingByMonth();
+                    this.findOrderSettingByMonth();
                 },
 				//向前一个月
                 pickPre: function (year, month) {
@@ -265,14 +269,14 @@
                     var d = new Date(this.formatDate(year, month, 1));
                     d.setDate(0);
                     this.initData(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1));
-                    this.findOrdersettingByMonth();
+                    this.findOrderSettingByMonth();
                 },
 				//向后一个月
                 pickNext: function (year, month) {
                     var d = new Date(this.formatDate(year, month, 1));
                     d.setDate(35);////获取指定天之后的日期
                     this.initData(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1));
-                    this.findOrdersettingByMonth();
+                    this.findOrderSettingByMonth();
                 },
                 // 返回 类似 2016-01-02 格式的字符串
                 formatDate: function (year, month, day) {

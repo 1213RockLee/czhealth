@@ -284,6 +284,14 @@ public class DateUtils {
         calendar.set(Calendar.DAY_OF_MONTH,1);
         return calendar.getTime();
     }
+    //获取本月月底的日期
+    public static Date getLastDay4ThisMonth(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH,1);
+        calendar.add(Calendar.MONTH,1);
+        calendar.add(Calendar.DAY_OF_MONTH,-1);
+        return calendar.getTime();
+    }
 
     public static void main(String[] args) {
         try {

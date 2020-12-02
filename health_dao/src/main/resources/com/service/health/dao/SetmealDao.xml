@@ -49,28 +49,34 @@
     <select id="findAllSetmeal" resultType="Setmeal">
         select * from t_setmeal
     </select>
-    <resultMap id="setmeal_checkgroup_checkitem" type="Setmeal" >
-        <id property="id" column="id"></id>
-        <result property="name" column="name"></result>
-        <result property="remark" column="remark"></result>
-        <result property="sex" column="sex"></result>
-        <result property="age" column="age"></result>
-        <result property="img" column="img"></result>
-        <collection property="checkGroups" ofType="checkGroup" >
+    <resultMap id="setmeal_checkgroup_checkitem" type="Setmeal">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="remark" column="remark"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="img" column="img"/>
+        <collection property="checkGroups" ofType="checkGroup">
             <id property="id" column="cg_id"></id>
-           <result property="name" column="cg_name"></result>
+            <result property="name" column="cg_name"></result>
             <result property="remark" column="cg_remark"></result>
             <collection property="checkItems" ofType="checkItem">
                 <id property="id" column="cm_id"></id>
-                <result property="name" column="cm_name"></result>
+                <result property="name" column="tcm_name"></result>
             </collection>
         </collection>
     </resultMap>
     <select id="findDetailById" parameterType="int" resultMap="setmeal_checkgroup_checkitem">
-       select ts.name,ts.remark,ts.sex,ts.age,ts.img,tcg.id cg_id,tcg.name cg_name,tcg.remark cg_remark,tcm.id cm_id,tcm.name cm_name
-from t_setmeal ts,t_setmeal_checkgroup tsc,t_checkgroup tcg,t_checkgroup_checkitem tcc,t_checkitem tcm
-where ts.id=tsc.setmeal_id and tsc.checkgroup_id=tcg.id and tcg.id=tcc.checkgroup_id and tcc.checkitem_id=tcm.id
-and ts.id=#{setmeal_id}
+      select
+        ts.id,ts.name,ts.remark,ts.sex,ts.age,ts.img,
+        tcg.id cg_id,tcg.name cg_name,tcg.remark cg_remark,
+        tcm.id cm_id,tcm.name tcm_name
+      from t_setmeal ts
+      left join t_setmeal_checkgroup tsc on  ts.id=tsc.setmeal_id
+      left join  t_checkgroup tcg on tsc.checkgroup_id=tcg.id
+      left join  t_checkgroup_checkitem tcc on tcg.id=tcc.checkgroup_id
+      left join  t_checkitem tcm on tcc.checkitem_id=tcm.id
+      where  ts.id=#{setmeal_id}
     </select>
 
 </mapper>

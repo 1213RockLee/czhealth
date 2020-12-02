@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.service.health.dao.ReportDao">
+    <select id="findMember" parameterType="string" resultType="int">
+        select count(0) from t_member where regTime &lt;= #{date}
+    </select>
+    <select id="findSetmeal" resultType="map">
+       select s.name,t.value from t_setmeal s, (
+    select setmeal_id,count(1) value from t_order group by setmeal_id
+) t where s.id=t.setmeal_id
+    </select>
+    <select id="findTodayNewMember" parameterType="string" resultType="int">
+        select count(0) from t_member where  regTime=#{date}
+    </select>
+    <select id="findTotalMember" resultType="int">
+        select count(0) from t_member
+     </select>
+    <select id="findThisWeekNewMember" parameterType="string" resultType="int">
+        select count(0) from t_member where regTime &gt;= #{date}
+    </select>
+    <select id="findThisMonthNewMember" parameterType="string" resultType="int">
+        select count(0) from t_member where regTime  &gt;= #{date}
+    </select>
+    <select id="findTodayOrderNumber" parameterType="string" resultType="int">
+        select count(0) from t_order where orderDate=#{date}
+    </select>
+    <select id="findTodayVisitsNumber" parameterType="string" resultType="int">
+        select count(0) from t_order where orderDate=#{date} and orderStatus=#{status}
+    </select>
+    <select id="findThisWeekOrderNumber" parameterType="string" resultType="int">
+        select count(0) from t_order where orderDate &gt;=#{startDate} and orderDate &lt;=#{startDate}
+    </select>
+    <select id="findThisWeekVisitsNumber" parameterType="string" resultType="int">
+        select count(0) from t_order where orderDate &gt;=#{startDate} and orderDate &lt;=#{startDate} and orderStatus=#{status}
+    </select>
+    <select id="findThisMonthOrderNumber" parameterType="string" resultType="int">
+        select count(0) from t_order where orderDate &gt;=#{startDate} and orderDate &lt;=#{startDate}
+    </select>
+    <select id="findThisMonthVisitsNumber" parameterType="string" resultType="int">
+        select count(0) from t_order where orderDate &gt;=#{startDate} and orderDate &lt;=#{startDate} and orderStatus=#{status}
+    </select>
+    <select id="findHotSetmeal" resultType="map">
+        select s.name,s.remark,t.count setmeal_count, t.count/t1.total proportion from (
+            select setmeal_id,count(1) count from t_order group by setmeal_id
+        ) t, (select count(1) total from t_order) t1, t_setmeal s
+        where t.setmeal_id=s.id order by t.count desc limit 0,4
+    </select>
+
+ </mapper>

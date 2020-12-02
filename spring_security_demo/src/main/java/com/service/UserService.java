@@ -53,10 +53,4 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    @Test
-    public void testPassword() {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        System.out.println(encoder.matches("1234", "$10$u/BcsUUqZNWUxdmDhbnoeeobJy6IBsL1Gn/S0dMxI2RbSgnMKJ.4a"));
-    }
-
 }

@@ -27,6 +27,7 @@ public class CheckItemController {
 
     }
     @RequestMapping("/add")
+    @PreAuthorize("hasAuthority('CHECKITEM_ADD')")
     public Result add(@RequestBody CheckItem checkItem){
             checkItemService.add(checkItem);
             return new Result(true,ADD_CHECKITEM_SUCCESS,null);

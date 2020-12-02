@@ -8,15 +8,17 @@
         <result property="username" column="username"/>
         <result property="password" column="password"/>
         <collection property="roles" ofType="role">
+            <result property="id" column="tr_id"></result>
             <result property="keyword" column="role_keyword"/>
             <collection property="permissions" ofType="permission">
+                <result property="id" column="tp_id"></result>
                 <result property="keyword" column="permission_keyword"/>
             </collection>
         </collection>
     </resultMap>
-    <select id="findByUsername" parameterType="string" resultMap="user_role_permission">
+    <select id="findByName" parameterType="string" resultMap="user_role_permission">
 select
-tu.id ,tu.username,tu.password,tr.keyword role_keyword,tp.keyword permission_keyword
+tu.id ,tu.username,tu.password,tr.id tr_id,tr.keyword role_keyword,tp.id tp_id,tp.keyword permission_keyword
 from
 t_user tu,t_user_role tur,t_role tr,t_role_permission trp,t_permission tp
 where

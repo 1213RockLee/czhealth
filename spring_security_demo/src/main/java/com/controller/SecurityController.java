@@ -13,6 +13,6 @@ public class SecurityController {
         @PreAuthorize("hasAuthority('CHECKITEM_ADD')")//表示用户必须拥有add权限才能调用当前方法
             public Result add()  {
             System.out.println("添加方法成功了");
-                return new Result(true, MessageConstant.ADD_CHECKGROUP_FAIL,null);
+                return new Result(true, MessageConstant.ADD_CHECKGROUP_SUCCESS,null);
             }
 }
